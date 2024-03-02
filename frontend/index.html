@@ -3,29 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Color Changing Text</title>
-<style>
-  h1 {
-    transition: color 0.5s ease-in-out;
-  }
-</style>
+<title>Motor controller</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1 id="text">Hello Chacko</h1>
-
-<script>
-  function changeColor() {
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
-    const text = document.getElementById('text');
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    text.style.color = randomColor;
-  }
-
-  function autoChangeColor() {
-    setInterval(changeColor, 100); // Change color every 2 seconds (2000 milliseconds)
-  }
-
-  autoChangeColor(); // Start the automatic color change
-</script>
+<h1 id="text">Hello world</h1>
+<script src="script.js"></script>
 </body>
 </html>
