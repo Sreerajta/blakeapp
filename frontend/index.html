@@ -26,9 +26,19 @@
                         <option>Select Input Port</option>
                     </select>
                 </div>
-                <button type="button" id="port-btn" class="btn btn-primary port-button"
-                    onclick="handleConnection()">Connect</button>
-                <p class="port-button" id="display-text"></p>
+                <div>
+                    <button type="button" id="port-btn" class="btn btn-primary port-button"
+                        onclick="handleConnection()">Connect</button>
+                </div>
+                <div>
+                    <p class="port-button" id="display-text"></p>
+                </div>
+                <div class="start-button">
+                    <button type="button" class="btn btn-success btn-lg"
+                        onclick="rotateMotor('forward')">Forward</button>
+                    <button type="button" class="btn btn-success btn-lg"
+                        onclick="rotateMotor('reverse')">Reverse</button>
+                </div>
             </div>
             <div class="col-9 chart">
                 <canvas id="myChart"></canvas>
@@ -166,13 +176,10 @@
                         <span class="btn btn-outline-primary">ALL</span>
                     </label>
                 </div>
-                <div class="start-button">
-                    <button type="button" class="btn btn-success btn-lg" onclick=getMotorRadio()>Forward</button>
-                    <button type="button" class="btn btn-success btn-lg" onclick=getMotorRadio()>Reverse</button>
-                </div>
+
             </div>
         </div>
-        
+
     </div>
 
 

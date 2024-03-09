@@ -93,8 +93,8 @@ function handleConnection() {
             portButton.classList.add("btn-danger");
             connectToPort(selectedPort);
         }
-        else{
-            displayMessage("Please select needed port","red");
+        else {
+            displayMessage("Please select needed port", "red");
         }
     } else {
         //Disconnecting
@@ -153,24 +153,23 @@ function updateChart() {
 document.onkeydown = function (e) {
     switch (e.keyCode) {
         case 38:
-            str = 'Up Key pressed!';
+            rotateMotor('forward')
             break;
 
         case 40:
-            str = 'Down Key pressed!';
+            rotateMotor('reverse')
             break;
     }
 }
-function getMotorRadio() {
+function rotateMotor(direction) {
     const radioButtons = document.querySelectorAll('input[type="radio"]');
-
     for (const radioButton of radioButtons) {
         if (radioButton.checked) {
             // Get the value of the selected radio button
             const value = Number(radioButton.id);
-
-            // Do something with the value
-            console.log(value);
+            var displayString = "Motor "+value+" rotated in "+direction;
+            displayMessage(displayString, '#198754')
+            return
         }
     }
 }
@@ -178,12 +177,11 @@ function displayMessage(string, color) {
     var textDom = document.getElementById('display-text')
     textDom.innerHTML = string;
     textDom.style.color = color
-    setTimeout(()=> {textDom.innerHTML = ''},2500)
+    setTimeout(() => { textDom.innerHTML = '' }, 2500)
 }
 function init() {
     getPorts();
     renderChart();
 }
-//setInterval(updateChart, 5000);
 init();
 /*** Functions - END ***/
