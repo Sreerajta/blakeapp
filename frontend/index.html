@@ -1,13 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motor controller</title>
-<link rel="stylesheet" href="static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Motor controller</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+        rel="stylesheet">
 </head>
+
 <body>
-<h1 id="text">Asalamu Alaikum</h1>
-<script src="static/script.js"></script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 inkcontrol">
+                <h2>KOMORI INK KEY CONTROL</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 port-selection">
+                <h3>Input Port</h3>
+                <div>
+                    <select id="port-select" class="form-select" onchange="portChanged(event)">
+                        <option>Select Input Port</option>
+                    </select>
+                </div>
+                <button type="button" id="port-btn" class="btn btn-primary port-button"
+                    onclick="handleConnection()">Connect</button>
+                <p class="port-button" id="display-text"></p>
+            </div>
+            <div class="col-9 chart">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 keyset">
+                <h3>Keyset</h3>
+                <div class="btn-group radio-group" role="group" aria-label="Basic radio toggle button group">
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="1" autocomplete="off">
+                        <span class="btn btn-outline-primary">1</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="2" autocomplete="off">
+                        <span class="btn btn-outline-primary">2</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="3" autocomplete="off">
+                        <span class="btn btn-outline-primary">3</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="4" autocomplete="off">
+                        <span class="btn btn-outline-primary">4</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="5" autocomplete="off">
+                        <span class="btn btn-outline-primary">5</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="6" autocomplete="off">
+                        <span class="btn btn-outline-primary">6</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="7" autocomplete="off">
+                        <span class="btn btn-outline-primary">7</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="8" autocomplete="off">
+                        <span class="btn btn-outline-primary">8</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="9" autocomplete="off">
+                        <span class="btn btn-outline-primary">9</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="10" autocomplete="off">
+                        <span class="btn btn-outline-primary">10</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="11" autocomplete="off">
+                        <span class="btn btn-outline-primary">11</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="12" autocomplete="off">
+                        <span class="btn btn-outline-primary">12</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="13" autocomplete="off">
+                        <span class="btn btn-outline-primary">13</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="14" autocomplete="off">
+                        <span class="btn btn-outline-primary">14</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="15" autocomplete="off">
+                        <span class="btn btn-outline-primary">15</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="16" autocomplete="off">
+                        <span class="btn btn-outline-primary">16</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="17" autocomplete="off">
+                        <span class="btn btn-outline-primary">17</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="18" autocomplete="off">
+                        <span class="btn btn-outline-primary">18</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="19" autocomplete="off">
+                        <span class="btn btn-outline-primary">19</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="20" autocomplete="off">
+                        <span class="btn btn-outline-primary">20</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="21" autocomplete="off">
+                        <span class="btn btn-outline-primary">21</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="22" autocomplete="off">
+                        <span class="btn btn-outline-primary">22</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="23" autocomplete="off">
+                        <span class="btn btn-outline-primary">23</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="24" autocomplete="off">
+                        <span class="btn btn-outline-primary">24</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="25" autocomplete="off">
+                        <span class="btn btn-outline-primary">25</span>
+                    </label> <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="26" autocomplete="off">
+                        <span class="btn btn-outline-primary">26</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="27" autocomplete="off">
+                        <span class="btn btn-outline-primary">27</span>
+                    </label> <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="28" autocomplete="off">
+                        <span class="btn btn-outline-primary">28</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" class="btn-check" name="btnradio" id="29" autocomplete="off">
+                        <span class="btn btn-outline-primary">ALL</span>
+                    </label>
+                </div>
+                <div class="start-button">
+                    <button type="button" class="btn btn-success btn-lg" onclick=getMotorRadio()>Forward</button>
+                    <button type="button" class="btn btn-success btn-lg" onclick=getMotorRadio()>Reverse</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <script src="static/bootstrap.min.js"></script>
+    <script src="static/jquery-3.71.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="static/script.js"></script>
 </body>
+
 </html>
