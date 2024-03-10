@@ -294,7 +294,7 @@ function displayMessage(string, color) {
 }
 function init() {
     getPorts();
-    //renderChart();
+    renderChart();
     //setInterval(() => { getValues() }, 1000)
 }
 init();
