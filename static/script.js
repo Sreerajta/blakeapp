@@ -9,7 +9,7 @@ const sendCommandUrl = "/send";
 const disconnectPortUrl = "/disconnect";
 const getValuesUrl = "/getValues";
 const rotateUrl = "/rotate";
-const connectUrl = "/stop";
+const stopUrl = "/stop";
 
 /*** Variable declarations ***/
 let ports = [];
@@ -17,7 +17,8 @@ let selectedPort = "Select Input Port";
 let isConnected = false;
 let chartData = {}
 var selectElement = document.getElementById("port-select");
-
+let motorNumber = 0;
+let keyPressed = false;
 /*** API methods - START ***/
 function getPorts() {
     ports = []
@@ -44,7 +45,7 @@ function connectToPort(portName) {
         redirect: "follow"
     };
 
-    fetch("/connect", requestOptions)
+    fetch(connectSerialUrl, requestOptions)
         .then((response) => response.text())
         .then((result) => {
             if (result) {
@@ -52,7 +53,11 @@ function connectToPort(portName) {
                 displayMessage(obj.message, '#198754');
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            console.error(error);
+            displayMessage("An error occurred. Please make sure port is not already in use", '#dc3545');
+            setTimeout(() => { handleConnection() }, 2500)
+        });
 }
 function disconnectPort() {
     fetch(disconnectPortUrl, getRequestOptions)
@@ -64,7 +69,88 @@ function disconnectPort() {
         })
         .catch((error) => console.error(error));
 }
+function rotate(obj) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: obj,
+        redirect: "follow"
+    };
+    fetch(rotateUrl, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            if (result) {
+                var res = JSON.parse(result)
+                displayMessage(res.message, '#198754');
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            displayMessage("An error occurred. Please try again later.", '#dc3545');
+        });
+}
+function stopMotor(motorId) {
+    console.log("Stopping motor " + motorId);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const obj = JSON.stringify({ "motor_group": motorId })
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: obj,
+        redirect: "follow"
+    };
+    fetch(stopUrl, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            if (result) {
+                var obj = JSON.parse(result)
+                displayMessage(obj.message, '#198754');
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            displayMessage("An error occurred.", '#dc3545');
+            setTimeout(() => { handleConnection() }, 2500)
+        });
+}
+function getValues() {
+    fetch(getValuesUrl, getRequestOptions)
+        .then((response) => response.text()).then((res) => {
+            if (res) {
+                console.log(res);
+                var obj = JSON.parse(res);
+                //displayMessage(obj.message, 'red');
+                console.log(obj.message);
+            }
+        })
+        .catch((error) => console.error(error));
+}
 /*** API methods - END ***/
+/* Event Listeners */
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("forwardButton").addEventListener('mousedown', () => {
+        //Clicked forward
+        rotateMotor('clockwise');
+    })
+    document.getElementById("forwardButton").addEventListener('mouseup', () => {
+        //Released forward 
+        if (motorNumber > 0)
+            stopMotor(motorNumber);
+    })
+    document.getElementById("reverseButton").addEventListener('mousedown', () => {
+        //Clicked reverse
+        rotateMotor('anti-clockwise');
+    })
+    document.getElementById("reverseButton").addEventListener('mouseup', () => {
+        //Released reverse 
+        if (motorNumber > 0)
+            stopMotor(motorNumber);
+    })
+})
 
 /*** Functions - START ***/
 function handleSelect() {
@@ -153,11 +239,32 @@ function updateChart() {
 document.onkeydown = function (e) {
     switch (e.keyCode) {
         case 38:
-            rotateMotor('forward')
+            if (!keyPressed) {
+                keyPressed = true
+                rotateMotor('clockwise');
+            }
             break;
 
         case 40:
-            rotateMotor('reverse')
+            if (!keyPressed) {
+                keyPressed = true;
+                rotateMotor('anti-clockwise');
+            }
+            break;
+    }
+}
+document.onkeyup = function (e) {
+    if(keyPressed)
+     keyPressed = !keyPressed;
+    switch (e.keyCode) {
+       case 38:
+            if (motorNumber > 0)
+                stopMotor(motorNumber);
+            break;
+
+        case 40:
+            if (motorNumber > 0)
+                stopMotor(motorNumber);
             break;
     }
 }
@@ -166,9 +273,15 @@ function rotateMotor(direction) {
     for (const radioButton of radioButtons) {
         if (radioButton.checked) {
             // Get the value of the selected radio button
-            const value = Number(radioButton.id);
-            var displayString = "Motor "+value+" rotated in "+direction;
-            displayMessage(displayString, '#198754')
+            motorNumber = Number(radioButton.id);
+            const sendObj = JSON.stringify({
+                "direction": direction,
+                "motor_group": motorNumber
+            });
+            console.log("Motor " + motorNumber + " rotated in " + direction);
+            rotate(sendObj);
+            //var displayString = "Motor "+motorId+" rotated in "+direction;
+            //displayMessage(displayString, '#198754')
             return
         }
     }
@@ -181,7 +294,8 @@ function displayMessage(string, color) {
 }
 function init() {
     getPorts();
-    renderChart();
+    //renderChart();
+    //setInterval(() => { getValues() }, 1000)
 }
 init();
 /*** Functions - END ***/
