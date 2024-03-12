@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 data_queue = queue.Queue()
 ser = None
+#continue_sending = {}
 
 def list_serial_ports():
     ports = serial.tools.list_ports.comports()
@@ -84,7 +85,6 @@ def disconnect_serial():
 def get_values():
     if not data_queue.empty():
         data = data_queue.get()
-
         matches = re.finditer(r"s(\d+)=(-?\d+\.\d+)", data)
         for match in matches:
             motor_id = int(match.group(1))
@@ -109,7 +109,12 @@ def rotate_motor():
 @app.route("/stop", methods=["POST"])
 def stop_motor():
     motor_group = request.json.get("motor_group")
-    send_once(f'S{motor_group}F')
+    if ser and ser.isOpen():
+        send_once(f'S{motor_group}F')
+        return jsonify({"message": "Command sent successfully"})
+    else: 
+        return jsonify({"message": "Serial Port Not Open"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
