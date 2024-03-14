@@ -28,9 +28,12 @@ def send_continuous(char):
 
 def read_from_port(ser, queue):
     while ser.isOpen():
+        print('serial port open reading')
         try:
             data = ser.readline()
             decoded_data = data.decode('utf-8').rstrip()
+            print('decoded data')
+            print(decoded_data)
             if decoded_data:
                 queue.put(decoded_data)
         except UnicodeDecodeError as e:
@@ -43,6 +46,7 @@ def read_from_port(ser, queue):
             except UnicodeDecodeError as e:
                 print(f"Failed to decode with latin-1 as well. Discarding the data.")
         except serial.SerialException:
+            print('breaking serial port')
             break
 
 @app.route('/')
@@ -62,6 +66,7 @@ def connect_serial():
     ser = serial.Serial(port, 9600, timeout=1)
     serial_thread = threading.Thread(target=read_from_port, args=(ser, data_queue), daemon=True)
     serial_thread.start()
+    print('thread started as daemon')
     return jsonify({"message": "Connected to serial port successfully"})
 
 @app.route("/send", methods=["POST"])
