@@ -86,10 +86,14 @@ def get_values():
     if not data_queue.empty():
         data = data_queue.get()
         matches = re.finditer(r"s(\d+)=(-?\d+\.\d+)", data)
+        result = []
         for match in matches:
             motor_id = int(match.group(1))
             motor_value = match.group(2)
-            return jsonify({"motorId": motor_id, "motorValue":motor_value})
+            result.push({"motorId": motor_id, "motorValue":motor_value})
+        return jsonify(result)
+    else:
+        return []
 
 @app.route("/rotate", methods=["POST"])
 def rotate_motor():
